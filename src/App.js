@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import React, { useState, useEffect } from "react";
 
@@ -8,8 +7,9 @@ const VendorManagement = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   const getProducts = async () => {
+    console.log("first")
     try {
-      fetch(`${process.env.REACT_APP_API_URL}/api/vendor`, {
+      fetch(`${process.env.REACT_APP_API_URL}/api/vendors`, {
         headers: {
           method: "GET",
           "Content-Type": "application/json",
