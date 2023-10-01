@@ -9,7 +9,7 @@ const VendorManagement = () => {
 
   const getProducts = async () => {
     try {
-      fetch("http://localhost:5000/api/vendor", {
+      fetch(`${process.env.REACT_APP_API_URL}/api/vendor`, {
         headers: {
           method: "GET",
           "Content-Type": "application/json",
@@ -20,7 +20,7 @@ const VendorManagement = () => {
         .then((data) => {
           console.log(data);
           setVendors(data);
-          console.log(process.env.REACT_APP_API_KEY); 
+          console.log(process.env.REACT_APP_API_URL);
         });
     } catch (error) {
       console.log("failed");
@@ -42,13 +42,16 @@ const VendorManagement = () => {
   };
 
   const handleConfirmVendor = () => {
-    fetch(`http://localhost:5000/api/vendors/${selectedVendor._id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(selectedVendor),
-    })
+    fetch(
+      `${process.env.REACT_APP_API_URL}/api/vendors/${selectedVendor._id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(selectedVendor),
+      }
+    )
       .then((res) => {
         if (!res.ok) {
           throw new Error(`HTTP error! Status: ${res.status}`);
@@ -71,25 +74,26 @@ const VendorManagement = () => {
   const handleDeleteVendor = () => {
     if (window.confirm("Are you sure you want to delete this vendor?")) {
       // Send a DELETE request to your backend API
-      fetch(`http://localhost:5000/api/vendors/${selectedVendor._id}`, {
-        method: 'DELETE',
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+      fetch(
+        `${process.env.REACT_APP_API_URL}/api/vendors/${selectedVendor._id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
         .then((res) => {
           if (!res.ok) {
             throw new Error(`HTTP error! Status: ${res.status}`);
           }
           window.location.reload();
-         
         })
         .catch((error) => {
           console.error("Delete error:", error);
         });
     }
   };
-  
 
   return (
     <div className="vendor-management">
@@ -98,14 +102,13 @@ const VendorManagement = () => {
         <ul>
           {vendors.map((vendor) => (
             <li
-            key={vendor.id}
-            onClick={() => {
-              handleSelectVendor(vendor);
-            }}
-            className={
-              setVendors.id === vendor.id ? 'selected' : 'unselected'
-            }
-      
+              key={vendor.id}
+              onClick={() => {
+                handleSelectVendor(vendor);
+              }}
+              className={
+                setVendors.id === vendor.id ? "selected" : "unselected"
+              }
             >
               {vendor.vendorName}
             </li>
@@ -158,9 +161,8 @@ const VendorManagement = () => {
             <p>Bank Account No.: {selectedVendor.bankAccountNo}</p>
             <p>Bank Name: {selectedVendor.bankName}</p>
             <div className="buttons">
-            <button onClick={handleEditVendor}>Edit</button>
-            <button  onClick={handleDeleteVendor}>Confirm</button>
-
+              <button onClick={handleEditVendor}>Edit</button>
+              <button onClick={handleDeleteVendor}>Confirm</button>
             </div>
           </div>
         )}
